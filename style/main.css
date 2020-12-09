@@ -175,7 +175,7 @@ svg.icon {
         font-size: 15px; }
         .search .search-result-box #search-result li a:hover {
           color: #21D4FD;
-          background: linear-gradient(30deg, #21D4FD, #B721FF);
+          background: linear-gradient(30deg, #eae5c9, #6cc6cb);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent; }
       .search .search-result-box #search-result li:first-child {
@@ -224,7 +224,7 @@ svg.icon {
     line-height: 1.5; }
     .item a:hover {
       color: #21D4FD;
-      background: linear-gradient(30deg, #21D4FD, #B721FF);
+      background: linear-gradient(30deg, #0c7bb3, #f2bae8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent; }
 
