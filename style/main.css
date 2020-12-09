@@ -196,18 +196,18 @@ svg.icon {
   .category li a {
     padding: 5px 11px;
     border: 1px solid #d9d9d9;
-    border-radius: 15px;
+    border-radius: 3px;
     box-sizing: border-box;
     font-size: 13px;
     font-weight: normal;
     line-height: 1.5;
     color: #555555; }
     .category li a:hover {
-      border: 1px solid #6bd95b; }
+      border: 1px solid  #7ba3a8; }
   .category li .active {
-    background: #6bd95b;
+    background: #7ba3a8;
     color: #ffffff;
-    border: 1px solid #6bd95b; }
+    border: 1px solid  #7ba3a8; }
 
 .list {
   float: left;
