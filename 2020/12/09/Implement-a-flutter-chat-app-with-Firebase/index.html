@@ -67,7 +67,7 @@
       </li>
       <li>
         
-    更新 <time datetime="2020-12-10T06:15:47.314Z" itemprop="dateUpdated">2020-12-09</time>
+    更新 <time datetime="2020-12-10T06:17:42.375Z" itemprop="dateUpdated">2020-12-09</time>
 
       </li>
       <li id="busuanzi_container_page_pv">
@@ -102,38 +102,28 @@
 <ul>
 <li>Here we mainly focus on the real time chat room implementation, just to simplify our situation, let’s assume we could have multiple users, but for each user, they only have one chat room with a list of real time messages. </li>
 <li>Therefore we can have a Users collection, which contains a list of user document. Each user document point to a Message collection, all messages are stored inside the Message collection. The structure is as follows:</li>
-<li><img src="https://i.loli.net/2020/12/10/1HIO3DrCNkRFhJY.png" alt="database"></li>
 </ul>
 </li>
+</ul>
+<p><img src="https://i.loli.net/2020/12/10/1HIO3DrCNkRFhJY.png" alt="database"></p>
+<ul>
 <li><p><strong>One-time Read</strong></p>
 <ul>
-<li><p>Call the <code>Query.get</code> or <code>DocumentReference.get</code></p>
-</li>
-<li><pre><code>CollectionReference users = FirebaseFirestore.instance.collection(&#39;users&#39;);
-
-return FutureBuilder&lt;DocumentSnapshot&gt;(
-  future: users.doc(documentId).get(),
-  builder:
-      (BuildContext context, AsyncSnapshot&lt;DocumentSnapshot&gt; snapshot) &#123;
-
-    if (snapshot.hasError) &#123;
-      return Text(&quot;Something went wrong&quot;);
-    &#125;
-
-    if (snapshot.connectionState == ConnectionState.done) &#123;
-      Map&lt;String, dynamic&gt; data = snapshot.data.data();
-      return Text(&quot;Full Name: $&#123;data[&#39;full_name&#39;]&#125; $&#123;data[&#39;last_name&#39;]&#125;&quot;);
-    &#125;
-
-    return Text(&quot;loading&quot;);
-  &#125;,
-);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- **Realtime changes**</span><br><span class="line"></span><br><span class="line">  - Fortunately, Firestore provides us a convenient way to listen to the real time changes. &#96;CollectionReference&#96; and &#96;DocumentReference&#96; both provide a &#96;snapshots&#96; method to help observe any subsequent changes to the collection or document. Which returns a &#96;Stream&#96;, so we can easily use a &#96;StreamBuilder&#96; to manage the streams state.</span><br><span class="line"></span><br><span class="line">  - &#96;&#96;&#96;</span><br><span class="line">    StreamBuilder(</span><br><span class="line">        stream: Firestore.instance.collection(&#39;User&#x2F;j42RaSRUQ7c6ldQe3hjQ&#x2F;Messages&#39;).snapshots(),</span><br><span class="line">        builder: (ctx, snapshot) &#123;</span><br><span class="line">          if (snapshot.hasError) &#123;</span><br><span class="line">            return Text(&quot;Something went wrong&quot;);</span><br><span class="line">          &#125;</span><br><span class="line">    </span><br><span class="line">          if (snapshot.connectionState &#x3D;&#x3D; ConnectionState.waiting) &#123;</span><br><span class="line">            return Text(&quot;Loading&quot;);</span><br><span class="line">          &#125;</span><br><span class="line">    </span><br><span class="line">          var data &#x3D; snapshot.data.documents;</span><br><span class="line">            print(data);</span><br><span class="line">            return ListView.builder(</span><br><span class="line">              itemCount: data.length,</span><br><span class="line">              itemBuilder: (ctx, index) &#x3D;&gt; Text(&#39;text&#39;)</span><br><span class="line">           	); </span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
+<li>Call the <code>Query.get</code> or <code>DocumentReference.get</code></li>
 </ul>
 </li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">CollectionReference users &#x3D; FirebaseFirestore.instance.collection(&#39;users&#39;);</span><br><span class="line"></span><br><span class="line">return FutureBuilder&lt;DocumentSnapshot&gt;(</span><br><span class="line">  future: users.doc(documentId).get(),</span><br><span class="line">  builder:</span><br><span class="line">      (BuildContext context, AsyncSnapshot&lt;DocumentSnapshot&gt; snapshot) &#123;</span><br><span class="line"></span><br><span class="line">    if (snapshot.hasError) &#123;</span><br><span class="line">      return Text(&quot;Something went wrong&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (snapshot.connectionState &#x3D;&#x3D; ConnectionState.done) &#123;</span><br><span class="line">      Map&lt;String, dynamic&gt; data &#x3D; snapshot.data.data();</span><br><span class="line">      return Text(&quot;Full Name: $&#123;data[&#39;full_name&#39;]&#125; $&#123;data[&#39;last_name&#39;]&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return Text(&quot;loading&quot;);</span><br><span class="line">  &#125;,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>Realtime changes</strong></p>
+<ul>
+<li>Fortunately, Firestore provides us a convenient way to listen to the real time changes. <code>CollectionReference</code> and <code>DocumentReference</code> both provide a <code>snapshots</code> method to help observe any subsequent changes to the collection or document. Which returns a <code>Stream</code>, so we can easily use a <code>StreamBuilder</code> to manage the streams state.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">StreamBuilder(</span><br><span class="line">    stream: Firestore.instance.collection(&#39;User&#x2F;j42RaSRUQ7c6ldQe3hjQ&#x2F;Messages&#39;).snapshots(),</span><br><span class="line">    builder: (ctx, snapshot) &#123;</span><br><span class="line">      if (snapshot.hasError) &#123;</span><br><span class="line">        return Text(&quot;Something went wrong&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      if (snapshot.connectionState &#x3D;&#x3D; ConnectionState.waiting) &#123;</span><br><span class="line">        return Text(&quot;Loading&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      var data &#x3D; snapshot.data.documents;</span><br><span class="line">        print(data);</span><br><span class="line">        return ListView.builder(</span><br><span class="line">          itemCount: data.length,</span><br><span class="line">          itemBuilder: (ctx, index) &#x3D;&gt; Text(&#39;text&#39;)</span><br><span class="line">       	); </span><br><span class="line">    &#125;,</span><br><span class="line">  )</span><br></pre></td></tr></table></figure>
+
 
       </div>
         <!--
