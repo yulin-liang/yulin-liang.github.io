@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="" />
+  <meta name="description" content="梁煜麟的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>Implement a flutter chat app with Firebase</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/">
+  
+  <h1 class="title">
+    Implement a flutter chat app with Firebase
+  </h1>
+  
+
+</a>
+  <a class="face-img" href="/">
+    <img src="https://i.loli.net/2020/12/09/liWow1fZmFVJEYO.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    Implement a flutter chat app with Firebase
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2020-12-10T06:12:24.000Z" itemprop="datePublished">2020-12-09</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2020-12-10T06:15:47.314Z" itemprop="dateUpdated">2020-12-09</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <h4 id="Firebase-setup"><a href="#Firebase-setup" class="headerlink" title="Firebase setup"></a>Firebase setup</h4><p>We are going to use Firebase authentication to implement our log in system, then all messages will be stored in Cloud Database. So we need to set up Firebase first.</p>
+<ul>
+<li><p>Add a new project in Firebase: <a target="_blank" rel="noopener" href="https://console.firebase.google.com/u/0/">linked</a></p>
+</li>
+<li><p><strong>Register your app with Firebase</strong> and add Firebase configurations to your app.</p>
+</li>
+<li><p>Install cloud_firestore into your flutter project: <a target="_blank" rel="noopener" href="https://pub.dev/packages/cloud_firestore">cloud_firestore pub dev</a></p>
+</li>
+</ul>
+<h4 id="Cloud-Firestore-APIs"><a href="#Cloud-Firestore-APIs" class="headerlink" title="Cloud Firestore APIs"></a>Cloud Firestore APIs</h4><ul>
+<li><p><a target="_blank" rel="noopener" href="https://firebase.flutter.dev/docs/firestore/usage">official document</a></p>
+</li>
+<li><p><strong>Firestore data model</strong></p>
+<ul>
+<li>The <strong>document</strong> is a piece of data, it is the unit of storage, which contains multiple fields and values.</li>
+<li>The <strong>collection</strong> is more like a table, which contains a list of documents.</li>
+<li>Obviously, collection can be nested inside of a document.</li>
+</ul>
+</li>
+<li><p><strong>Database structure</strong></p>
+<ul>
+<li>Here we mainly focus on the real time chat room implementation, just to simplify our situation, let’s assume we could have multiple users, but for each user, they only have one chat room with a list of real time messages. </li>
+<li>Therefore we can have a Users collection, which contains a list of user document. Each user document point to a Message collection, all messages are stored inside the Message collection. The structure is as follows:</li>
+<li><img src="https://i.loli.net/2020/12/10/1HIO3DrCNkRFhJY.png" alt="database"></li>
+</ul>
+</li>
+<li><p><strong>One-time Read</strong></p>
+<ul>
+<li><p>Call the <code>Query.get</code> or <code>DocumentReference.get</code></p>
+</li>
+<li><pre><code>CollectionReference users = FirebaseFirestore.instance.collection(&#39;users&#39;);
+
+return FutureBuilder&lt;DocumentSnapshot&gt;(
+  future: users.doc(documentId).get(),
+  builder:
+      (BuildContext context, AsyncSnapshot&lt;DocumentSnapshot&gt; snapshot) &#123;
+
+    if (snapshot.hasError) &#123;
+      return Text(&quot;Something went wrong&quot;);
+    &#125;
+
+    if (snapshot.connectionState == ConnectionState.done) &#123;
+      Map&lt;String, dynamic&gt; data = snapshot.data.data();
+      return Text(&quot;Full Name: $&#123;data[&#39;full_name&#39;]&#125; $&#123;data[&#39;last_name&#39;]&#125;&quot;);
+    &#125;
+
+    return Text(&quot;loading&quot;);
+  &#125;,
+);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- **Realtime changes**</span><br><span class="line"></span><br><span class="line">  - Fortunately, Firestore provides us a convenient way to listen to the real time changes. &#96;CollectionReference&#96; and &#96;DocumentReference&#96; both provide a &#96;snapshots&#96; method to help observe any subsequent changes to the collection or document. Which returns a &#96;Stream&#96;, so we can easily use a &#96;StreamBuilder&#96; to manage the streams state.</span><br><span class="line"></span><br><span class="line">  - &#96;&#96;&#96;</span><br><span class="line">    StreamBuilder(</span><br><span class="line">        stream: Firestore.instance.collection(&#39;User&#x2F;j42RaSRUQ7c6ldQe3hjQ&#x2F;Messages&#39;).snapshots(),</span><br><span class="line">        builder: (ctx, snapshot) &#123;</span><br><span class="line">          if (snapshot.hasError) &#123;</span><br><span class="line">            return Text(&quot;Something went wrong&quot;);</span><br><span class="line">          &#125;</span><br><span class="line">    </span><br><span class="line">          if (snapshot.connectionState &#x3D;&#x3D; ConnectionState.waiting) &#123;</span><br><span class="line">            return Text(&quot;Loading&quot;);</span><br><span class="line">          &#125;</span><br><span class="line">    </span><br><span class="line">          var data &#x3D; snapshot.data.documents;</span><br><span class="line">            print(data);</span><br><span class="line">            return ListView.builder(</span><br><span class="line">              itemCount: data.length,</span><br><span class="line">              itemBuilder: (ctx, index) &#x3D;&gt; Text(&#39;text&#39;)</span><br><span class="line">           	); </span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '1a3479a83d404aec2a91',
+    clientSecret: 'd9395010fd3f5c98b0afa1ec0cc3c2d386978888',
+    repo: 'yulin-liang.github.io',
+    owner: 'yulin-liang',
+    admin: ['yulin-liang'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <!-- <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p> -->
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>
