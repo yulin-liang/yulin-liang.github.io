@@ -14,7 +14,7 @@ Author URI: https://hufangyun.com
   border: 0; }
 
 body {
-  font-family: 'Source Sans Pro', "Helvetica Neue", "Helvetica", "Arial","PingFang SC","Hiragino Sans GB","WenQuanYi Micro Hei","Microsoft Yahei",sans-serif;;
+  font-family: -apple-system,"Helvetica Neue", "Helvetica", "Arial","PingFang SC","Hiragino Sans GB","WenQuanYi Micro Hei","Microsoft Yahei",sans-serif;
   -webkit-font-smoothing: antialiased;
   font-size: 14px;
   line-height: 1.6;
@@ -73,9 +73,6 @@ svg.icon {
     .left-aside .face-img img:hover {
       -webkit-transform: translate(0px, -10px);
               transform: translate(0px, -10px); }
-  .left-aside .intro-word h2 {
-    font-weight: bold;
-  }
   .left-aside .intro-word p {
     margin: 12px;
     font-size: 17px;
@@ -89,6 +86,7 @@ svg.icon {
       margin: 60px 10px 20px; }
       .left-aside .sns li img {
         width: 31px;
+        height: 31px;
         transition: All ease-in-out 0.4s; }
         .left-aside .sns li img:hover {
           -webkit-transform: rotate(360deg);
@@ -116,6 +114,13 @@ svg.icon {
         margin-left: -6px;
         border: 7px solid transparent;
         border-bottom-color: #2DCB70; }
+    .left-aside .profile li {
+      text-decoration: none;
+    }
+    .leftAside .profile li img {
+      width: 20px;
+      height: 20px;
+    }
 
 .right-aside {
   margin-left: 318px; }
