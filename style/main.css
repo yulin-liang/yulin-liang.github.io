@@ -77,9 +77,12 @@ svg.icon {
     margin: 12px;
     font-size: 17px;
     font-weight: 500; }
+  .left-aside .intro-word h2 {
+    font-weight: 600;
+  }
   .left-aside .sns {
     position: absolute;
-    bottom: 20%; }
+    bottom: 10%; }
     .left-aside .sns li {
       list-style: none;
       float: left;
@@ -114,12 +117,47 @@ svg.icon {
         margin-left: -6px;
         border: 7px solid transparent;
         border-bottom-color: #2DCB70; }
-    .left-aside .profile li {
-      text-decoration: none;
+    
+    .left-aside .profile-block {
+      padding-top: 20px;
     }
-    .leftAside .profile li img {
-      width: 20px;
-      height: 20px;
+
+    .left-aside .profile-block .profile-title {
+      font-size: 16px;
+      font-weight: 600;
+      text-align: start;
+      margin: 40px 0 10px 0px;
+      border-bottom: black dotted 1px;
+    }
+
+    .left-aside .profile ul{
+      padding: 0;
+      align-items: center;
+    }
+
+    .left-aside .profile li {
+      margin: 10px 0 10px 0;
+      list-style: none;
+      float: left;
+      vertical-align: middle;
+    }
+    .left-aside .profile li img {
+      width: 30px;
+      height: 30px;
+      margin-right: 20px;
+      vertical-align: middle;
+    }
+
+    .left-aside .profile li span {
+      vertical-align: middle;
+    }
+
+    .left-aside .profile .timeline {
+      color: #515151;
+    }
+
+    .left-aside .profile .place {
+      font-weight: 600;
     }
 
 .right-aside {
