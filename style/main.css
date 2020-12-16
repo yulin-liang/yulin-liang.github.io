@@ -609,6 +609,17 @@ svg.icon {
   padding-top: 30px;
   overflow-y: auto; }
 
+.left-aside .fork-me {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.left-aside .fork-me img {
+  width: 120px;
+  height: 120px;
+}
+
 .leftAside .icon {
   font-size: 21px;
   text-align: center; }
