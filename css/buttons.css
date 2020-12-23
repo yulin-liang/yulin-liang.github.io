@@ -1,0 +1,332 @@
+@import "theme.css";
+
+/* #################### 上一页按钮 #################### */
+#article-nav-previous, #article-nav-previous:hover, #article-nav-previous:link {
+    text-decoration: none;
+    color: black;
+}
+
+#article-nav-previous {
+    float: left;
+    position: relative;
+    transition: all .35s;
+    padding: 15px 30px;
+    font-weight: bold;  
+}
+
+#article-nav-previous::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    z-index: 0;
+    background: #ff5964;
+    transition: all .35s;
+}
+
+ #article-nav-previous span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.35s;
+    font-size: 16px;
+    z-index: 1;
+}
+
+ #article-nav-previous span::before {
+    content: '\00ab';
+    position: absolute;
+    z-index: 1;
+    opacity: 1;
+    top: 0;
+    left: -20px;
+    transition: 0.35s;
+  }
+
+ #article-nav-previous:hover span {
+    padding-left: 25px;
+  }
+
+  #article-nav-previous:hover span::before {
+      opacity: 1;
+      left: 0;
+  }
+
+#article-nav-previous:hover::after {
+    width: 100%;
+}
+
+/* #################### 下一页按钮 #################### */
+#article-nav-next, #article-nav-next:hover, #article-nav-next:link {
+    text-decoration: none;
+    color: black;
+}
+
+#article-nav-next {
+    float: right;
+    position: relative;
+    transition: all .35s;
+    padding: 15px 30px;
+    font-weight: bold;  
+}
+
+#article-nav-next.read-more {
+    padding: 5px 15px;
+    font-size: 12px;
+    color: #ff5964;
+}
+
+#article-nav-next.read-more span {
+    font-size: 14px;
+}
+
+#article-nav-next::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    z-index: 0;
+    background: #ff5964;
+    transition: all .35s;
+}
+
+#article-nav-next.read-more::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    z-index: 0;
+    /* background: linear-gradient(to right, #ed6ea0, #ff5964); */
+    background: #ff5964;
+    transition: all .35s;
+}
+
+#article-nav-next:hover::before {
+    width: 100%;
+}
+
+#article-nav-next span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.35s;
+    font-size: 16px;
+}
+
+#article-nav-next:hover span {
+    padding-right: 25px;
+}
+
+#article-nav-next.read-more:hover span {
+    padding-right: 15px;
+    color: white;
+}
+
+#article-nav-next span::after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 1;
+    top: 0;
+    right: -20px;
+    transition: 0.35s;
+}
+
+#article-nav-next.read-more span::after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -15px;
+    transition: 0.15s;
+}
+
+#article-nav-next:hover span::after {
+    opacity: 1;
+    right: 0;
+}
+
+/* #################### hover显示上下border的button #################### */
+.vertical-border-btn {
+    color: #FFF;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .vertical-border-btn span {
+    transition: all 0.3s;
+  }
+  .vertical-border-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.3s;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-color: rgba(255,255,255,0.5);
+    border-bottom-color: rgba(255,255,255,0.5);
+    transform: scale(0.1, 1);
+  }
+  .vertical-border-btn:hover span {
+    letter-spacing: 2px;
+  }
+  .vertical-border-btn:hover::before {
+    opacity: 1; 
+    transform: scale(1, 1); 
+  }
+  .vertical-border-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all 0.3s;
+    background-color: rgba(255,255,255,0.1);
+  }
+  .vertical-border-btn:hover::after {
+    opacity: 0; 
+    transform: scale(0.1, 1);
+  }
+
+.vertical-border-btn.active span{
+    letter-spacing: 2px;
+}
+ .vertical-border-btn.active::before {
+    opacity: 1; 
+    transform: scale(1, 1); 
+ }
+ .vertical-border-btn.active::after {
+    opacity: 0; 
+    transform: scale(0.1, 1);
+ }
+
+/* #################### hover button上移 #################### */
+.hover-to-move{
+    transition: All ease-in-out 0.4s;
+}
+    .hover-to-move:hover {
+        -webkit-transform: translate(0px, -10px);
+                transform: translate(0px, -10px); 
+    }
+
+/***/
+.border-card{
+    transform: translate(-50%, -50%);
+    background: #111845a6;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgb(23, 32, 90);
+    border: 2px solid #2a3cad;
+    color: white;
+    padding: 20px;
+}
+    
+    .border-card:before{
+        content: '';
+        position:absolute;
+        top:0;
+        left:-100%;
+        width:100%;
+        height:100%;
+        background: rgba(255,255,255,0.1);
+        transition:0.5s;
+        pointer-events: none;
+    }
+    
+    .border-card:hover:before{
+        left:-50%;
+        transform: skewX(-5deg);
+    }
+    
+    
+    .border-card .content{
+        position:absolute;
+        top:15px;
+        left:15px;
+        right:15px;
+        bottom:15px;
+        border:1px solid #f0a591;
+        padding:20px;
+        text-align:center;
+        box-shadow: 0 5px 10px rgba(9,0,0,0.5);
+    
+    }
+    
+    .border-card span{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        box-sizing: border-box;
+        
+    }
+    
+    .border-card span:nth-child(1)
+    {
+        transform:rotate(0deg);
+    }
+    
+    .border-card span:nth-child(2)
+    {
+        transform:rotate(90deg);
+    }
+    
+    .border-card span:nth-child(3)
+    {
+        transform:rotate(180deg);
+    }
+    
+    .border-card span:nth-child(4)
+    {
+        transform:rotate(270deg);
+    }
+    
+    .border-card span:before
+    {
+        content: '';
+        position: absolute;
+        width:100%;
+        height: 2px;
+        background: #50dfdb;
+        animation: animate 4s linear infinite;
+    }
+    
+    @keyframes animate {
+        0% {
+            transform:scaleX(0);
+            transform-origin: left;
+        }
+        50%
+        {
+            transform:scaleX(1);
+            transform-origin: left;
+        }
+        50.1%
+        {
+            transform:scaleX(1);
+            transform-origin: right;
+            
+        }
+        
+        100%
+        {
+            transform:scaleX(0);
+            transform-origin: right;
+            
+        }
+    }
