@@ -4,6 +4,13 @@
     <title></title>
     <meta charset="utf-8">
 
+    
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+        <link rel="dns-prefetch" href="https://api.github.com">
+        <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+        <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.7.0/gitalk.min.css">
+    
+
     <!-- 引入css配置文件 -->
     
 <link rel="stylesheet" href="/css/style.css">
@@ -120,6 +127,25 @@
 
                 </div>
         
+                
+                    <div class="article-comments" id="comments">
+                        
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+      const gitalk = new Gitalk({
+        clientID: '1a3479a83d404aec2a91',
+        clientSecret: 'd9395010fd3f5c98b0afa1ec0cc3c2d386978888',
+        repo: 'yulin-liang.github.io',
+        owner: 'yulin-liang',
+        admin: ['yulin-liang'],
+        id: '移动开发 - 屏幕成像原理',      // Ensure uniqueness and length less than 50
+        distractionFreeMode: ''
+      })
+    
+      gitalk.render('comments');
+    </script>
+
+                    </div>
                  
         
                 
